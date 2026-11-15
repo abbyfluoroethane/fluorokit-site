@@ -19,5 +19,6 @@ cd ../fluorokit-site && npm install && npm run dev   # http://localhost:4323
 
 `.github/workflows/deploy.yml` builds the kit and the site and publishes to
 GitHub Pages. In the repo settings, set Pages to deploy from GitHub Actions.
-It is live at <https://bigaouette.com/fluorokit-site/> (the account's Pages
-custom domain, with the repo name as the path).
+It is live at <https://fluorokit.bigaouette.com/>. The domain is set in
+Settings > Pages, with a DNS-only CNAME record for `fluorokit` pointing at
+`abbyfluoroethane.github.io`.

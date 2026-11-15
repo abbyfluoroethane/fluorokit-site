@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 // fluorokit comes from ../fluorokit (a file: dependency). Build the kit
 // before you run this site.
 //
-// On GitHub Pages the site is served from a sub-path. The deploy workflow
-// sets SITE_BASE; locally the site is at the root.
+// SITE_BASE is the path the site is served from. It is the root here and on
+// fluorokit.bigaouette.com; the deploy workflow sets it.
 export default defineConfig({
   base: process.env.SITE_BASE || '/',
   trailingSlash: 'always',

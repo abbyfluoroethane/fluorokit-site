@@ -22,9 +22,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # A project site is served under /<repo>/, on github.io or on the
-      # account's custom domain.
-      SITE_BASE: /${{ github.event.repository.name }}
+      # The site has its own domain (Settings > Pages > Custom domain), so it
+      # is served from the root. Without a custom domain, set this to
+      # /${{ github.event.repository.name }}.
+      SITE_BASE: /
     steps:
       - name: Check out the site
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
