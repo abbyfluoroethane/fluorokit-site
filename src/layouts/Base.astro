@@ -47,6 +47,9 @@ const pageTitle = path === url('/') ? 'fluorokit' : `${title} · fluorokit`;
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{pageTitle}</title>
   <meta name="description" content={description}>
+  <link rel="icon" href={url('/favicon.ico')} sizes="48x48">
+  <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml">
+  <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')}>
   {/* Before the first paint: the saved theme and mode, then the side the
       page-enter comes from. */}
   <script is:inline>
@@ -70,7 +73,7 @@ const pageTitle = path === url('/') ? 'fluorokit' : `${title} · fluorokit`;
   <div class:list={['shell', { app }]}>
     <header>
       <div class="top">
-        <p class="brand fk-overline"><a href={url('/')}>fluorokit</a> <span class="fk-muted">{VERSION}</span></p>
+        <p class="brand fk-overline"><a href={url('/')}><img src={url('/favicon.svg')} alt="" width="20" height="20">fluorokit</a> <span class="fk-muted">{VERSION}</span></p>
         <div class="tools">
           <ThemeSwitcher />
         </div>
