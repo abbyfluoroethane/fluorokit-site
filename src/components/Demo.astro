@@ -1,0 +1,69 @@
+---
+// A live demo with two tabs: the preview, and the code of the demo itself.
+import { Code } from 'astro:components';
+import DemoHost from './DemoHost.svelte';
+import { demoSource } from '../catalog';
+
+interface Props {
+  name: string;
+}
+const { name } = Astro.props;
+---
+<div class="demo" data-demo>
+  <div class="fk-pivot fk-pivot-sub tabs" role="tablist" aria-label="Demo">
+    <button type="button" role="tab" aria-selected="true" data-tab="preview">preview</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="code">code</button>
+  </div>
+  <div class="panel stage" role="tabpanel" data-panel="preview">
+    <DemoHost name={name} client:visible />
+  </div>
+  <div class="panel code" role="tabpanel" data-panel="code" hidden>
+    <button class="copy button small" type="button" data-copy>copy</button>
+    <Code code={demoSource(name)} lang="svelte" theme="css-variables" />
+  </div>
+</div>
+
+<script>
+  document.addEventListener('click', (event) => {
+    const tab = (event.target as HTMLElement).closest<HTMLElement>('[data-demo] [data-tab]');
+    if (!tab) return;
+    const demo = tab.closest('[data-demo]')!;
+    for (const t of demo.querySelectorAll<HTMLElement>('[data-tab]')) t.setAttribute('aria-selected', String(t === tab));
+    for (const p of demo.querySelectorAll<HTMLElement>('[data-panel]')) p.hidden = p.dataset.panel !== tab.dataset.tab;
+  });
+</script>
+
+<style>
+  .tabs {
+    margin-bottom: var(--fk-space-2);
+  }
+  .panel {
+    border: 1px solid var(--fk-line);
+  }
+  .stage {
+    min-height: 7rem;
+    padding: var(--fk-space-6);
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .code {
+    position: relative;
+  }
+  .copy {
+    position: absolute;
+    top: var(--fk-space-2);
+    right: var(--fk-space-2);
+    background: var(--fk-mantle);
+  }
+  @media (max-width: 600px) {
+    .code {
+      background: var(--fk-mantle);
+    }
+    .copy {
+      position: static;
+      margin: var(--fk-space-2) var(--fk-space-2) 0;
+    }
+  }
+</style>

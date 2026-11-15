@@ -1,0 +1,114 @@
+---
+import Base from '../../layouts/Base.astro';
+import Demo from '../../components/Demo.astro';
+import { EXTRAS, SHADCN, type Entry } from '../../catalog';
+
+const groups: { id: string; name: string; note: string; items: Entry[] }[] = [
+  { id: 'shadcn', name: 'shadcn', note: 'Stock shadcn-svelte components.', items: SHADCN },
+  { id: 'extras', name: 'extras', note: 'Fluorokit Metro components.', items: EXTRAS },
+];
+---
+<Base title="components">
+  <div class="layout">
+    <nav class="index" aria-label="Components">
+      {groups.map((g) => (
+        <div>
+          <p class="fk-overline">{g.name}</p>
+          <ul>{g.items.map((c) => <li><a href={`#${c.id}`}>{c.name}</a></li>)}</ul>
+        </div>
+      ))}
+    </nav>
+
+    <div class="list">
+      {groups.map((g) => (
+        <>
+          <header class="group" id={g.id}>
+            <h2 class="fk-title">{g.name}</h2>
+            <p class="fk-muted">{g.note}</p>
+          </header>
+          {g.items.map((c) => (
+            <section id={c.id}>
+              <h3 class="fk-subheading">{c.name}</h3>
+              {c.note && <p class="fk-small fk-muted">{c.note}</p>}
+              <Demo name={c.id} />
+            </section>
+          ))}
+        </>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: var(--fk-space-12);
+    align-items: start;
+  }
+  .index {
+    position: sticky;
+    top: var(--fk-space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--fk-space-6);
+  }
+  .index .fk-overline {
+    margin: 0 0 var(--fk-space-2);
+    color: var(--fk-muted);
+  }
+  .index ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .index a {
+    display: block;
+    padding: 2px 0;
+    color: var(--fk-muted);
+    font-size: var(--fk-small-size);
+    text-decoration: none;
+  }
+  .index a:hover {
+    color: var(--fk-text);
+    background: none;
+  }
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fk-space-12);
+    max-width: 52rem;
+  }
+  .group {
+    padding-top: var(--fk-space-4);
+  }
+  .group:not(:first-child) {
+    margin-top: var(--fk-space-8);
+  }
+  .group h2 {
+    margin: 0 0 var(--fk-space-2) -0.03em;
+  }
+  .group p,
+  section p {
+    margin: 0;
+  }
+  section {
+    scroll-margin-top: var(--fk-space-6);
+  }
+  section h3 {
+    margin-bottom: var(--fk-space-1);
+  }
+  section :global(.demo) {
+    margin-top: var(--fk-space-3);
+  }
+  @media (max-width: 800px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .index {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+</style>

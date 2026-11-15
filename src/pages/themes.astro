@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import Code from '../components/Code.astro';
+import ThemeCard from '../components/ThemeCard.astro';
+import { BLURBS, THEMES, modeName, url } from '../site';
+
+const modes = `
+<html>                    <!-- follows the OS setting -->
+<html class="dark">       <!-- or force a mode -->
+<html data-theme="teflon"> <!-- or name it -->
+`;
+// The color roles, with what each is for. Swatches show the current theme.
+const ROLES: [string, string][] = [
+  ['base', 'page'], ['mantle', 'recessed: code, cards'], ['deep', 'deepest recess'], ['raised', 'raised fills'],
+  ['line', 'rules and borders'], ['overlay', 'faint text'], ['text', 'text'], ['muted', 'secondary text'],
+  ['accent', 'underlines, current item'], ['bar-start', 'energy bar'], ['focus', 'focus ring'], ['control-border', 'input borders'],
+  ['status-ok', 'ok'], ['status-warn', 'warning'], ['status-error', 'error'], ['status-info', 'info'],
+];
+---
+<Base title="themes">
+  <p class="lead">Each theme has a dark and a light mode. Click a card to try it here, or <a href={url('/create/')}>make your own</a>.</p>
+
+  {THEMES.map((theme) => (
+    <section>
+      <div class="head">
+        <h2 class="fk-title">{theme.name}</h2>
+        <p class="fk-muted">{BLURBS[theme.name] ?? ''}</p>
+        <code class="fk-small">fluorokit/themes/{theme.name}.css</code>
+      </div>
+      <div class="pair">
+        {modeName(theme, 'dark') && <ThemeCard theme={theme} scheme="dark" />}
+        {modeName(theme, 'light') && <ThemeCard theme={theme} scheme="light" />}
+      </div>
+    </section>
+  ))}
+
+  <section>
+    <h2 class="fk-heading">Modes</h2>
+    <p class="fk-muted">Each theme also ships as <code>.shadcn.css</code> (with shadcn’s variable names) and <code>.scoped.css</code> (under <code>[data-fk-theme]</code>, for more than one theme on a page).</p>
+    <div class="snippet"><Code code={modes} lang="html" /></div>
+  </section>
+
+  <section>
+    <h2 class="fk-heading">Colors</h2>
+    <p class="fk-muted">Every theme defines these. Each is <code>--fk-&lt;name&gt;</code>.</p>
+    <div class="roles">
+      {ROLES.map(([name, use]) => (
+        <div>
+          <span class="swatch" style={`background: var(--fk-${name})`}></span>
+          <code class="fk-small">{name}</code>
+          <span class="fk-small fk-muted">{use}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  main > p.lead {
+    margin: 0;
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--fk-space-1) var(--fk-space-6);
+    margin-bottom: var(--fk-space-4);
+  }
+  .head p {
+    margin: 0;
+  }
+  .head code {
+    margin-left: auto;
+    color: var(--fk-muted);
+    background: none;
+  }
+  .pair {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--fk-space-4);
+  }
+  section > h2 {
+    margin-bottom: var(--fk-space-2);
+  }
+  .snippet {
+    max-width: 40rem;
+    margin-top: var(--fk-space-4);
+  }
+  .roles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: var(--fk-space-4);
+    margin-top: var(--fk-space-4);
+  }
+  .roles div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .roles code {
+    padding: 0;
+    background: none;
+  }
+  .swatch {
+    height: var(--fk-space-8);
+    margin-bottom: var(--fk-space-1);
+    border: 1px solid var(--fk-line);
+  }
+</style>

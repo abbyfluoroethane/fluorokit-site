@@ -1,0 +1,15 @@
+/* Tailwind, for the stock shadcn-svelte components that the docs show. The
+   kit's tailwind.css maps the shadcn color names to the theme. The kit's
+   own classes go in the components layer, so that utilities can override
+   them. */
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn-svelte/tailwind.css';
+@import 'fluorokit/tailwind.css';
+@import 'fluorokit/base.css' layer(components);
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}

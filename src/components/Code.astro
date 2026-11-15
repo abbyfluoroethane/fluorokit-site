@@ -1,0 +1,53 @@
+---
+// A code block with a copy button.
+import { Code as Shiki } from 'astro:components';
+
+interface Props {
+  code: string;
+  lang?: 'css' | 'sh' | 'html' | 'js';
+  label?: string;
+}
+const { code, lang = 'css', label } = Astro.props;
+---
+<figure class="code-block">
+  {label && <figcaption class="fk-label">{label}</figcaption>}
+  <div class="body">
+    <button class="copy button small" type="button" data-copy>copy</button>
+    <Shiki code={code.trim()} lang={lang} theme="css-variables" />
+  </div>
+</figure>
+
+<script>
+  document.addEventListener('click', async (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-copy]');
+    if (!button) return;
+    const text = button.parentElement?.querySelector('pre')?.textContent ?? '';
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = 'copied';
+    } catch {
+      button.textContent = 'failed';
+    }
+    setTimeout(() => (button.textContent = 'copy'), 1500);
+  });
+</script>
+
+<style>
+  .code-block {
+    margin: 0;
+  }
+  figcaption {
+    margin-bottom: var(--fk-space-2);
+    color: var(--fk-muted);
+  }
+  .body {
+    position: relative;
+    border: 1px solid var(--fk-line);
+  }
+  .copy {
+    position: absolute;
+    top: var(--fk-space-2);
+    right: var(--fk-space-2);
+    background: var(--fk-mantle);
+  }
+</style>

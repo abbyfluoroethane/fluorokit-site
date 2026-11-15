@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import Code from '../components/Code.astro';
+import ThemeCard from '../components/ThemeCard.astro';
+import { THEMES, url } from '../site';
+
+const shadcn = `
+@import 'tailwindcss';
+@import 'fluorokit/structure.css';
+@import 'fluorokit/themes/ink.shadcn.css';
+@import 'fluorokit/tailwind.css';
+@import 'fluorokit/base.css' layer(components);
+`;
+const plain = `
+@import 'fluorokit/structure.css';
+@import 'fluorokit/themes/ink.css';
+@import 'fluorokit/base.css';
+`;
+---
+<Base title="fluorokit">
+  <section class="intro">
+    <div>
+      <p class="lead">A Metro theme for shadcn-svelte.</p>
+      <p class="fk-muted">Flat, square, lowercase. Add components with the shadcn-svelte CLI as usual, then import a theme; nothing is forked. It also adds tiles, pivots and a few other Metro pieces. Those work as plain CSS too, without Svelte or shadcn.</p>
+      <div class="fk-bar bar"></div>
+      <div class="snippets">
+        <Code code={shadcn} label="with shadcn-svelte (tailwind 4)" />
+        <Code code={plain} label="plain css, without shadcn-svelte" />
+      </div>
+      <p class="fk-small fk-muted">Not on npm yet: <code>npm install ../fluorokit</code> from a local checkout.</p>
+    </div>
+    <div class="fk-tile-grid tiles">
+      <a class="fk-tile" data-size="large" href={url('/components/')} style="--fk-tile-color: var(--fk-tile-pink)">
+        <span class="fk-overline">components</span>
+      </a>
+      <a class="fk-tile" data-size="wide" href={url('/themes/')} style="--fk-tile-color: var(--fk-tile-blue)">
+        <span class="fk-overline">themes</span>
+      </a>
+      <a class="fk-tile" data-size="wide" href={url('/create/')} style="--fk-tile-color: var(--fk-tile-sky)">
+        <span class="fk-overline">create</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <p class="fk-overline">try a theme</p>
+    <div class="themes">
+      {THEMES.map((theme) => <ThemeCard theme={theme} scheme="dark" mini />)}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--fk-space-12);
+    align-items: start;
+  }
+  .bar {
+    height: var(--fk-bar-edge);
+    margin: var(--fk-space-6) 0;
+  }
+  .snippets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fk-space-6);
+    margin-bottom: var(--fk-space-4);
+    max-width: 40rem;
+  }
+  .tiles {
+    width: calc(2 * var(--fk-tile-1) + var(--fk-tile-gap));
+  }
+  .themes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--fk-space-4);
+  }
+  @media (max-width: 1000px) {
+    .intro {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

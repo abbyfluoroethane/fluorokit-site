@@ -1,0 +1,69 @@
+---
+// Theme and mode, top right. The choice is saved, and Base.astro applies it
+// before the first paint. Any element with data-set-theme (and, if it has
+// one, data-set-mode) also sets the theme: the theme cards use that.
+import { THEMES } from '../site';
+---
+<div class="switcher">
+  <label class="fk-sr-only" for="fk-theme">Theme</label>
+  <select id="fk-theme">
+    {THEMES.map((t) => <option value={t.name}>{t.name}</option>)}
+  </select>
+  <div class="modes" role="group" aria-label="Mode">
+    {['auto', 'light', 'dark'].map((m) => (
+      <button class="button small" type="button" data-mode={m} aria-pressed="false">{m}</button>
+    ))}
+  </div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const select = document.querySelector<HTMLSelectElement>('#fk-theme')!;
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-mode]')];
+  const read = (key: string, fallback: string) => {
+    try {
+      return localStorage.getItem(key) || fallback;
+    } catch {
+      return fallback;
+    }
+  };
+  function apply(theme: string, mode: string) {
+    root.dataset.fkTheme = theme;
+    root.classList.remove('dark', 'light');
+    if (mode !== 'auto') root.classList.add(mode);
+    select.value = theme;
+    for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.mode === mode));
+    for (const el of document.querySelectorAll<HTMLElement>('[data-set-theme]')) {
+      el.setAttribute('aria-pressed', String(el.dataset.setTheme === theme));
+    }
+    try {
+      localStorage.setItem('fk-theme', theme);
+      localStorage.setItem('fk-mode', mode);
+    } catch {
+      // Not saved, but still applied.
+    }
+  }
+  apply(read('fk-theme', 'ink'), read('fk-mode', 'auto'));
+  select.addEventListener('change', () => apply(select.value, read('fk-mode', 'auto')));
+  document.addEventListener('click', (event) => {
+    const el = (event.target as HTMLElement).closest<HTMLElement>('[data-mode], [data-set-theme]');
+    if (!el) return;
+    if (el.dataset.mode) apply(read('fk-theme', 'ink'), el.dataset.mode);
+    else apply(el.dataset.setTheme!, el.dataset.setMode ?? read('fk-mode', 'auto'));
+  });
+</script>
+
+<style>
+  .switcher,
+  .modes {
+    display: flex;
+    align-items: center;
+  }
+  .switcher {
+    gap: var(--fk-space-2);
+  }
+  /* The three mode buttons share their edges. */
+  .modes .button + .button {
+    margin-left: -1px;
+  }
+</style>

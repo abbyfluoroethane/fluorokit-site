@@ -1,0 +1,280 @@
+/* The showcase site's own styles. Everything with an fk prefix comes from
+   fluorokit; this file is the reset, the element styles and the layout
+   that a site adds on top. */
+
+/* In the base layer: Tailwind utilities, and the kit's classes in the
+   components layer, override these. */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-radius: 0;
+  }
+  html {
+    background: var(--fk-base);
+    color-scheme: inherit;
+  }
+  body {
+    margin: 0;
+    font-family: var(--fk-font-sans);
+    font-size: var(--fk-body-size);
+    line-height: var(--fk-body-leading);
+    background: var(--fk-base);
+    color: var(--fk-text);
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+  }
+  p {
+    margin: 0 0 var(--fk-space-4);
+    max-width: 66ch;
+  }
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+  }
+  a {
+    color: var(--fk-text);
+    text-decoration: underline;
+    text-decoration-color: var(--fk-link-underline);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+  }
+  a:hover {
+    background: var(--fk-hover);
+  }
+  :focus-visible {
+    outline: 2px solid var(--fk-focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--fk-selection);
+    color: var(--fk-text);
+  }
+  code,
+  pre {
+    font-family: var(--fk-font-mono);
+    font-size: var(--fk-data-size);
+  }
+  :not(pre) > code {
+    padding: 0 var(--fk-space-1);
+    background: var(--fk-mantle);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    padding: var(--fk-space-2) var(--fk-space-4) var(--fk-space-2) 0;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--fk-line);
+  }
+  th {
+    color: var(--fk-muted);
+  }
+
+  /* ---- the shell: one left edge ---- */
+  .shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--fk-space-8) var(--fk-page-margin) var(--fk-space-16);
+  }
+  @media (max-width: 1000px) {
+    .shell {
+      padding: var(--fk-space-6) var(--fk-space-4) var(--fk-space-12);
+    }
+  }
+  /* An app page fills the window. Its main area takes what the header
+     leaves, and the page does not scroll. */
+  .shell.app {
+    height: 100vh;
+    min-height: 0;
+    padding-top: var(--fk-space-4);
+    padding-bottom: var(--fk-space-4);
+    padding-inline: var(--fk-space-6);
+  }
+  .shell.app header nav {
+    margin-top: var(--fk-space-2);
+    margin-bottom: var(--fk-space-4);
+  }
+  .shell.app main {
+    min-height: 0;
+  }
+  /* The create page makes its own theme: the site's theme list is not for it. */
+  .shell.app #fk-theme {
+    display: none;
+  }
+  .shell.app main > * {
+    animation: none;
+  }
+  /* On a narrow window an app page scrolls like the others. */
+  @media (max-width: 900px) {
+    .shell.app {
+      height: auto;
+      padding-inline: var(--fk-space-4);
+    }
+  }
+  header .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--fk-space-3);
+    min-height: var(--fk-touch-target);
+  }
+  header .tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--fk-space-2);
+  }
+  header .brand {
+    margin: 0;
+  }
+  header .brand a {
+    text-decoration: none;
+  }
+  header h1 {
+    margin: 0 0 var(--fk-space-4) -0.04em; /* the first letter sits on the left edge */
+  }
+  header nav {
+    flex-wrap: wrap;
+    row-gap: var(--fk-space-1);
+    margin-bottom: var(--fk-space-12);
+  }
+  /* With no big title, the nav sits under the top row. */
+  header .top + nav {
+    margin-top: var(--fk-space-4);
+    margin-bottom: var(--fk-space-8);
+  }
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--fk-space-16);
+  }
+  footer {
+    margin-top: var(--fk-space-16);
+    color: var(--fk-muted);
+  }
+  footer p {
+    margin: 0;
+    max-width: none;
+  }
+
+  /* Page content slides in after the header. */
+  main > * {
+    animation: fk-enter var(--fk-enter-duration) var(--fk-ease-metro) backwards;
+    animation-delay: 120ms;
+  }
+  main > :nth-child(2) { animation-delay: 180ms; }
+  main > :nth-child(n + 3) { animation-delay: 240ms; }
+  @media (prefers-reduced-motion: reduce) {
+    main > * {
+      animation: none;
+    }
+  }
+
+  /* ---- sections ---- */
+  section > .fk-overline {
+    margin: 0 0 var(--fk-space-2);
+    color: var(--fk-muted);
+  }
+  section > h2 {
+    margin-bottom: var(--fk-space-4);
+  }
+  .lead {
+    font-size: var(--fk-subheading-size);
+    line-height: var(--fk-subheading-leading);
+  }
+
+  /* ---- buttons: a 2px edge, or the accent fill ---- */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--fk-touch-target);
+    padding: 0 var(--fk-space-4);
+    border: 2px solid var(--fk-text);
+    background: none;
+    color: var(--fk-text);
+    font: 600 var(--fk-small-size) / 1 var(--fk-font-sans);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .button:hover {
+    background: var(--fk-hover);
+  }
+  .button.primary {
+    border-color: var(--fk-accent);
+    background: var(--fk-accent);
+    color: var(--fk-on-accent);
+  }
+  .button.primary:hover {
+    background: color-mix(in srgb, var(--fk-accent) 85%, var(--fk-text));
+  }
+  .button[aria-pressed='true'] {
+    background: var(--fk-text);
+    color: var(--fk-base);
+  }
+  .button.small {
+    min-height: 32px;
+    padding: 0 var(--fk-space-3);
+    border-width: 1px;
+    border-color: var(--fk-control-border);
+    font: 500 var(--fk-label-size) / 1 var(--fk-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .button.small[aria-pressed='true'] {
+    border-color: var(--fk-text);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--fk-space-2);
+    margin: var(--fk-space-6) 0;
+  }
+  select {
+    min-height: 32px;
+    padding: 0 var(--fk-space-2);
+    border: 1px solid var(--fk-control-border);
+    background: var(--fk-base);
+    color: var(--fk-text);
+    font: 500 var(--fk-label-size) / 1 var(--fk-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ---- code: the theme's syntax colors, on mantle ----
+     Astro's css-variables code theme reads --astro-code-*. A theme with
+     syntax colors gives --fk-syntax-*; the others fall back to its accents. */
+  :root {
+    --astro-code-foreground: var(--fk-text);
+    --astro-code-background: transparent;
+    --astro-code-token-comment: var(--fk-syntax-comment, var(--fk-muted));
+    --astro-code-token-keyword: var(--fk-syntax-keyword, var(--fk-accent));
+    --astro-code-token-string: var(--fk-syntax-string, var(--fk-status-ok));
+    --astro-code-token-string-expression: var(--fk-syntax-string, var(--fk-status-ok));
+    --astro-code-token-constant: var(--fk-syntax-constant, var(--fk-chart-2));
+    --astro-code-token-function: var(--fk-syntax-function, var(--fk-status-info));
+    --astro-code-token-parameter: var(--fk-text);
+    --astro-code-token-punctuation: var(--fk-syntax-punctuation, var(--fk-muted));
+    --astro-code-token-link: var(--fk-syntax-function, var(--fk-status-info));
+  }
+  pre.astro-code {
+    margin: 0;
+    padding: var(--fk-space-4);
+    background: var(--fk-mantle) !important;
+    overflow-x: auto;
+    line-height: var(--fk-data-leading);
+  }
+  /* A demo that is one button (a menu or dialog trigger) keeps its own
+     width in a column stage. */
+  astro-island > button {
+    align-self: flex-start;
+  }
+}

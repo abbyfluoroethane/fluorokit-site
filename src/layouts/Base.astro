@@ -1,0 +1,94 @@
+---
+// The one layout. Every theme is loaded under [data-fk-theme], so the
+// switcher can change it in place.
+import '@fontsource/ibm-plex-sans/300.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import 'fluorokit/fonts/selawik.css';
+import 'fluorokit/structure.css';
+import 'fluorokit/themes/ink.scoped.css';
+import 'fluorokit/themes/blueberry.scoped.css';
+import 'fluorokit/themes/twilight.scoped.css';
+import 'fluorokit/themes/cobalt.scoped.css';
+import 'fluorokit/themes/catppuccin.scoped.css';
+import 'fluorokit/themes/zune.scoped.css';
+import '../styles/tailwind.css';
+import '../styles/site.css';
+import { enterDirectionScript } from 'fluorokit/enter';
+import ThemeSwitcher from '../components/ThemeSwitcher.astro';
+import { NAV, VERSION, url } from '../site';
+
+interface Props {
+  /** The page title: the big lowercase header, and the tab title. */
+  title: string;
+  description?: string;
+  /** Show the title as the big header. */
+  hero?: boolean;
+  /** An app page: it fills the window and does not scroll, and has no footer. */
+  app?: boolean;
+  /** The content only: no header and no footer. For a page inside an iframe. */
+  bare?: boolean;
+}
+const { title, description = 'A Metro theme for shadcn-svelte.', hero = true, app = false, bare = false } = Astro.props;
+const path = Astro.url.pathname;
+// The nav entry with the longest href that the path starts with. Home is
+// current only on the home page.
+const current = [...NAV]
+  .filter((n) => (n.href === url('/') ? path === url('/') : path.startsWith(n.href)))
+  .sort((a, b) => b.href.length - a.href.length)[0];
+const pageTitle = path === url('/') ? 'fluorokit' : `${title} · fluorokit`;
+---
+<!doctype html>
+<html lang="en" data-fk-theme="ink">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{pageTitle}</title>
+  <meta name="description" content={description}>
+  {/* Before the first paint: the saved theme and mode, then the side the
+      page-enter comes from. */}
+  <script is:inline>
+    (() => {
+      let theme = 'ink', mode = 'auto';
+      try {
+        theme = localStorage.getItem('fk-theme') || theme;
+        mode = localStorage.getItem('fk-mode') || mode;
+      } catch {}
+      const root = document.documentElement;
+      root.dataset.fkTheme = theme;
+      if (mode === 'dark' || mode === 'light') root.classList.add(mode);
+    })();
+  </script>
+  <script is:inline set:html={enterDirectionScript(NAV.map((n) => n.href))} />
+</head>
+<body>
+  {bare ? (
+    <slot />
+  ) : (
+  <div class:list={['shell', { app }]}>
+    <header>
+      <div class="top">
+        <p class="brand fk-overline"><a href={url('/')}>fluorokit</a> <span class="fk-muted">{VERSION}</span></p>
+        <div class="tools">
+          <ThemeSwitcher />
+        </div>
+      </div>
+      {hero && <h1 class="fk-hero fk-enter">{title}</h1>}
+      <nav class="fk-pivot fk-pivot-sub fk-enter" style="--i: 1" aria-label="Site">
+        {NAV.map((n) => (
+          <a href={n.href} aria-current={n === current ? 'page' : undefined}>{n.name}</a>
+        ))}
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    {!app && <footer>
+      <p class="fk-small">MIT · catppuccin colors from <a href="https://github.com/catppuccin/catppuccin">Catppuccin</a> · Selawik under the SIL Open Font License</p>
+    </footer>}
+  </div>
+  )}
+</body>
+</html>

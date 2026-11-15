@@ -1,0 +1,112 @@
+---
+// One mode of one theme, shown inside its own element: the scoped theme
+// files make that possible. The card is a button that sets the site's theme.
+import { modeName, type Theme } from '../site';
+
+interface Props {
+  theme: Theme;
+  scheme: 'light' | 'dark';
+  /** A small card: the name, the bar and the tiles only. */
+  mini?: boolean;
+}
+const { theme, scheme, mini = false } = Astro.props;
+const mode = modeName(theme, scheme);
+const tiles = theme.tiles ? ['pink', 'sky', 'blue', 'lavender', 'red', 'green'] : [];
+const surfaces = ['base', 'mantle', 'deep', 'raised', 'line', 'overlay'];
+---
+<button
+  class:list={['card', scheme, { mini }]}
+  type="button"
+  data-fk-theme={theme.name}
+  data-set-theme={theme.name}
+  data-set-mode={scheme}
+  aria-pressed="false"
+  aria-label={`Use the ${theme.name} theme, ${scheme} mode`}
+>
+  <span class="fk-overline over">{mini ? theme.name : mode === scheme ? scheme : `${mode} · ${scheme}`}</span>
+  {!mini && (
+    <>
+      <span class="fk-title">home</span>
+      <span class="text">Body text, with <span class="link">a link</span> and <span class="muted">muted text</span>.</span>
+    </>
+  )}
+  <span class="fk-bar bar"></span>
+  <span class="tiles">
+    {tiles.length
+      ? tiles.map((t) => <span style={`background: var(--fk-tile-${t})`}></span>)
+      : <><span style="background: var(--fk-accent)"></span><span style="background: var(--fk-bar-end)"></span></>}
+  </span>
+  {!mini && (
+    <>
+      <span class="statuses">
+        <span class="fk-status ok">ok</span>
+        <span class="fk-status warn">warn</span>
+        <span class="fk-status error">error</span>
+        <span class="fk-status info">info</span>
+      </span>
+      <span class="surfaces">
+        {surfaces.map((s) => <span style={`background: var(--fk-${s})`} title={s}></span>)}
+      </span>
+      <code class="hex">{theme.modes[mode!].colors.base}</code>
+    </>
+  )}
+</button>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fk-space-3);
+    width: 100%;
+    padding: var(--fk-space-6);
+    border: 2px solid var(--fk-line);
+    background: var(--fk-base);
+    color: var(--fk-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .card.mini {
+    gap: var(--fk-space-2);
+    padding: var(--fk-space-4);
+  }
+  .card:hover,
+  .card[aria-pressed='true'] {
+    border-color: var(--fk-accent);
+  }
+  .over,
+  .muted {
+    color: var(--fk-muted);
+  }
+  .link {
+    text-decoration: underline;
+    text-decoration-color: var(--fk-link-underline);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+  }
+  .bar {
+    height: var(--fk-bar-edge);
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--fk-space-1);
+  }
+  .tiles span {
+    aspect-ratio: 1;
+  }
+  .statuses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--fk-space-4);
+  }
+  .surfaces {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    height: var(--fk-space-6);
+    border: 1px solid var(--fk-line);
+  }
+  .hex {
+    color: var(--fk-muted);
+  }
+</style>

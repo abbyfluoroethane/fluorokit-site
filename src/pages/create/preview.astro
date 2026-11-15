@@ -1,0 +1,11 @@
+---
+// The preview of the create page. It is shown in an iframe, so that the
+// theme that the page makes is apart from the site's own theme, and so that
+// menus and dialogs of the preview take it too. The parent page sends the
+// theme with postMessage.
+import Base from '../../layouts/Base.astro';
+import PreviewApp from '../../components/PreviewApp.svelte';
+---
+<Base title="preview" bare>
+  <PreviewApp client:load />
+</Base>

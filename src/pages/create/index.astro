@@ -1,0 +1,10 @@
+---
+// Make a theme. The page is an app that fills the window: named choices in
+// a rail on the left, and a live preview in an iframe (src/pages/create/
+// preview.astro) on the right.
+import Base from '../../layouts/Base.astro';
+import Creator from '../../components/Creator.svelte';
+---
+<Base title="create" description="Make a fluorokit theme: pick a base, accents, tiles and a font, see it live, get the code." hero={false} app>
+  <Creator client:load />
+</Base>
