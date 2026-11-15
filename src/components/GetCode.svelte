@@ -46,7 +46,7 @@
       t.make(manager),
       'cd my-app',
       ...(t.shadcn ? [`${m.dlx} shadcn-svelte@latest init`] : []),
-      `${m.add} ../fluorokit`,
+      `${m.add} fluorokit`,
       themeCommand(t.shadcn ? 'shadcn' : 'css', t.css),
     ].join('\n'),
   );
@@ -104,7 +104,7 @@
       {@render managers()}
       <pre>{newProject}</pre>
     </div>
-    <p class="fk-small fk-muted">fluorokit is not on npm yet, so the fourth line adds it from a folder beside the project. Then put this in the CSS entry of the project:</p>
+    <p class="fk-small fk-muted">Then put this in the CSS entry of the project:</p>
     <div class="block"><pre>{entry}</pre></div>
     <div class="buttons">
       <Button class="flex-1" onclick={() => copy(newProject, 'The commands are')}>Copy Commands</Button>
