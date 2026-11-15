@@ -119,6 +119,7 @@
     }
   }
   header .top {
+    margin-bottom: var(--fk-space-2);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -131,6 +132,15 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--fk-space-2);
+  }
+  @media (max-width: 600px) {
+    header .top {
+      gap: var(--fk-space-3);
+      margin-bottom: var(--fk-space-6);
+    }
+    header .tools {
+      width: 100%;
+    }
   }
   header .brand {
     margin: 0;

@@ -26,6 +26,9 @@
   let past = $state<Choice[]>([]);
   let future = $state<Choice[]>([]);
   let view = $state<'01' | '02'>('01');
+  // On a narrow screen there is no room to the right of the rail: menus open below.
+  let narrow = $state(false);
+  const side = $derived(narrow ? 'bottom' : 'right');
   let mode = $state<'auto' | 'dark' | 'light'>('auto');
 
   const code = $derived(encodePreset(choice));
@@ -133,6 +136,10 @@
     const fromUrl = decodePreset(new URL(location.href).searchParams.get('preset'));
     if (fromUrl) choice = fromUrl as Choice;
     ready = true;
+    const media = matchMedia('(max-width: 900px)');
+    narrow = media.matches;
+    const onMedia = () => (narrow = media.matches);
+    media.addEventListener('change', onMedia);
     // The mode of the site (the buttons at the top) is the mode of the preview.
     const root = document.documentElement;
     const readMode = () => (mode = root.classList.contains('dark') ? 'dark' : root.classList.contains('light') ? 'light' : 'auto');
@@ -165,6 +172,7 @@
     addEventListener('keydown', onKey);
     return () => {
       observer.disconnect();
+      media.removeEventListener('change', onMedia);
       removeEventListener('message', onMessage);
       removeEventListener('keydown', onKey);
     };
@@ -196,7 +204,7 @@
           <span class="value">Menu</span>
           <List />
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content class="w-56" side="right" align="start" sideOffset={8}>
+        <DropdownMenu.Content class="w-56" {side} align="start" sideOffset={8}>
           <DropdownMenu.Item onSelect={openPreset}>Open Preset... <DropdownMenu.Shortcut>O</DropdownMenu.Shortcut></DropdownMenu.Item>
           <DropdownMenu.Item onSelect={shuffle}>Shuffle <DropdownMenu.Shortcut>R</DropdownMenu.Shortcut></DropdownMenu.Item>
           <DropdownMenu.Item onSelect={toggleMode}>Light/Dark <DropdownMenu.Shortcut>D</DropdownMenu.Shortcut></DropdownMenu.Item>
@@ -221,7 +229,7 @@
                   <span class="value">{current.name}</span>
                   <span class="marks">{@render mark(key, current)}</span>
                 </DropdownMenu.Trigger>
-                <DropdownMenu.Content class="max-h-[70vh] w-52" side="right" align="start" sideOffset={8}>
+                <DropdownMenu.Content class="max-h-[60vh] w-52" {side} align="start" sideOffset={8}>
                   <DropdownMenu.RadioGroup value={choice[key]} onValueChange={(id) => set(key, id)}>
                     {#each OPTIONS[key] as o (o.id)}
                       <DropdownMenu.RadioItem value={o.id}>
@@ -314,6 +322,10 @@
   }
   .section:last-child {
     border-bottom: 0;
+  }
+  /* The site's stylesheet has its own .actions with a margin. */
+  .section.actions {
+    margin: 0;
   }
   .choices {
     flex: 1;
@@ -499,9 +511,29 @@
     .create {
       grid-template-columns: minmax(0, 1fr);
       grid-template-rows: auto 80vh;
+      gap: var(--fk-space-4);
     }
     .choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--fk-space-2);
+      padding: var(--fk-space-3);
       overflow: visible;
+      border-bottom: 1px solid var(--fk-line);
+    }
+    .choices .section {
+      display: contents;
+    }
+    .section.actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .section.actions > :global(:first-child) {
+      grid-column: 1 / -1;
+    }
+    .views {
+      right: var(--fk-space-3);
+      bottom: var(--fk-space-3);
     }
   }
 </style>

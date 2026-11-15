@@ -50,4 +50,16 @@ const { code, lang = 'css', label } = Astro.props;
     right: var(--fk-space-2);
     background: var(--fk-mantle);
   }
+  @media (max-width: 600px) {
+    .body {
+      display: flex;
+      flex-direction: column;
+      background: var(--fk-mantle);
+    }
+    .copy {
+      position: static;
+      align-self: flex-end;
+      margin: var(--fk-space-2) var(--fk-space-2) 0;
+    }
+  }
 </style>

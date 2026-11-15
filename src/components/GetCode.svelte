@@ -150,10 +150,17 @@
   }
   .top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: var(--fk-space-4);
     margin-bottom: var(--fk-space-6);
+  }
+  .top :global(.fk-pivot) {
+    flex-wrap: wrap;
+    row-gap: var(--fk-space-1);
+  }
+  .top :global(.fk-pivot > [role='tab']) {
+    white-space: nowrap;
   }
   p {
     margin: 0 0 var(--fk-space-2);

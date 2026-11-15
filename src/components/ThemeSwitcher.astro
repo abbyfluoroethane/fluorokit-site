@@ -60,10 +60,32 @@ import { THEMES } from '../site';
     align-items: center;
   }
   .switcher {
-    gap: var(--fk-space-2);
+    gap: var(--fk-space-3);
+  }
+  /* Full touch targets, not the small size. */
+  .switcher select,
+  .switcher .button {
+    min-height: var(--fk-touch-target);
+  }
+  .switcher select {
+    padding: 0 var(--fk-space-3);
+  }
+  .switcher .button {
+    padding: 0 var(--fk-space-4);
   }
   /* The three mode buttons share their edges. */
   .modes .button + .button {
     margin-left: -1px;
+  }
+  /* On a phone the controls take a row of their own: the theme list takes
+     the width the mode buttons leave. */
+  @media (max-width: 600px) {
+    .switcher {
+      width: 100%;
+    }
+    .switcher select {
+      flex: 1;
+      min-width: 0;
+    }
   }
 </style>
