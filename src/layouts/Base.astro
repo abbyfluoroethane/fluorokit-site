@@ -85,7 +85,7 @@ const pageTitle = path === url('/') ? 'fluorokit' : `${title} · fluorokit`;
         ))}
       </nav>
     </header>
-    <main>
+    <main class:list={{ 'fk-enter-children': !app }}>
       <slot />
     </main>
     {!app && <footer>

@@ -108,9 +108,6 @@
   .shell.app #fk-theme {
     display: none;
   }
-  .shell.app main > * {
-    animation: none;
-  }
   /* On a narrow window an app page scrolls like the others. */
   @media (max-width: 900px) {
     .shell.app {
@@ -174,19 +171,6 @@
   footer p {
     margin: 0;
     max-width: none;
-  }
-
-  /* Page content slides in after the header. */
-  main > * {
-    animation: fk-enter var(--fk-enter-duration) var(--fk-ease-metro) backwards;
-    animation-delay: 120ms;
-  }
-  main > :nth-child(2) { animation-delay: 180ms; }
-  main > :nth-child(n + 3) { animation-delay: 240ms; }
-  @media (prefers-reduced-motion: reduce) {
-    main > * {
-      animation: none;
-    }
   }
 
   /* ---- sections ---- */
