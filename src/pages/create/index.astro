@@ -4,7 +4,14 @@
 // preview.astro) on the right.
 import Base from '../../layouts/Base.astro';
 import Creator from '../../components/Creator.svelte';
+import Warning from 'phosphor-svelte/lib/Warning';
 ---
 <Base title="create" description="Make a fluorokit theme: pick a base, accents, tiles and a font, see it live, get the code." hero={false} app>
+  {/* The page is a script-driven app. Without JavaScript, show the notice
+      in place of controls that would do nothing. */}
+  <noscript>
+    <p class="js-warn"><Warning weight="bold" size={16} />This feature requires JavaScript to function.</p>
+    <style>.create { display: none !important; }</style>
+  </noscript>
   <Creator client:load />
 </Base>

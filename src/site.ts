@@ -17,7 +17,7 @@ export const BLURBS: Record<string, string> = {
   ink: 'Near-black with a hint of blue.',
   blueberry: 'Saturated blue.',
   twilight: 'Deep violet.',
-  cobalt: 'Bright blue, closest to a Windows 8 Start screen.',
+  cobalt: 'Bright blue.',
   catppuccin: 'Catppuccin Mocha and Latte with a pink accent.',
   zune: 'Neutral greys, magenta to orange, set in Selawik.',
 };

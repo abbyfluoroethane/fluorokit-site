@@ -260,6 +260,25 @@
     overflow-x: auto;
     line-height: var(--fk-data-leading);
   }
+  /* ---- warn banner: the status-warn fill with its on-warn label ----
+     Shown in a <noscript> where a feature needs JavaScript. */
+  .js-warn {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--fk-space-2);
+    margin: 0;
+    max-width: none;
+    padding: var(--fk-space-2) var(--fk-space-3);
+    background: var(--fk-status-warn);
+    color: var(--fk-on-warn);
+    font-size: var(--fk-small-size);
+    font-weight: 600;
+    line-height: var(--fk-small-leading);
+  }
+  .js-warn svg {
+    flex: none;
+    margin-top: 0.125rem; /* centers the icon on the first line */
+  }
   /* A demo that is one button (a menu or dialog trigger) keeps its own
      width in a column stage. */
   astro-island > button {
