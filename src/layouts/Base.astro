@@ -18,7 +18,7 @@ import '../styles/tailwind.css';
 import '../styles/site.css';
 import { enterDirectionScript } from 'fluorokit/enter';
 import ThemeSwitcher from '../components/ThemeSwitcher.astro';
-import { NAV, VERSION, url } from '../site';
+import { NAV, url } from '../site';
 
 interface Props {
   /** The page title: the big lowercase header, and the tab title. */
@@ -73,7 +73,6 @@ const pageTitle = path === url('/') ? 'fluorokit' : `${title} · fluorokit`;
   <div class:list={['shell', { app }]}>
     <header>
       <div class="top">
-        <p class="brand fk-overline"><a href={url('/')}>fluorokit</a> <span class="fk-muted">{VERSION}</span></p>
         <div class="tools">
           <ThemeSwitcher />
         </div>

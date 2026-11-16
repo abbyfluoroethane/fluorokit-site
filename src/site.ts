@@ -1,8 +1,6 @@
 // What the pages share: the nav, and the themes read from the kit.
 import allThemes from 'fluorokit/themes.json';
 
-export const VERSION = '0.1.0';
-
 // In display order. The page-enter comes from the side a page lies on.
 /** A path on this site, under the base path (on GitHub Pages, the repo name). */
 export const url = (path: string) => import.meta.env.BASE_URL.replace(/\/$/, '') + path;
