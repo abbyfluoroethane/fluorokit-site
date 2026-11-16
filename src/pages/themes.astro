@@ -9,6 +9,12 @@ const modes = `
 <html class="dark">       <!-- or force a mode -->
 <html data-theme="teflon"> <!-- or name it -->
 `;
+const sizes = `
+<html>                          <!-- browser default, 16px -->
+<html data-fk-size="compact">   <!-- 13px, dense desktop apps -->
+<html data-fk-size="large">     <!-- 18px -->
+<html data-fk-size="wide">      <!-- 16px, up to 130% on big screens -->
+`;
 // The color roles, with what each is for. Swatches show the current theme.
 const ROLES: [string, string][] = [
   ['base', 'page'], ['mantle', 'recessed: code, cards'], ['deep', 'deepest recess'], ['raised', 'raised fills'],
@@ -38,6 +44,12 @@ const ROLES: [string, string][] = [
     <h2 class="fk-heading">Modes</h2>
     <p class="fk-muted">Each theme also ships as <code>.shadcn.css</code> (with shadcn’s variable names) and <code>.scoped.css</code> (under <code>[data-fk-theme]</code>, for more than one theme on a page).</p>
     <div class="snippet"><Code code={modes} lang="html" /></div>
+  </section>
+
+  <section>
+    <h2 class="fk-heading">Sizes</h2>
+    <p class="fk-muted">Every size is in rem, so the root font size scales type, spacing and tiles together. With no attribute it’s the browser’s size.</p>
+    <div class="snippet"><Code code={sizes} lang="html" /></div>
   </section>
 
   <section>
